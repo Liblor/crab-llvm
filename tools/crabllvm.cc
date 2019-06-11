@@ -310,11 +310,13 @@ int main(int argc, char **argv) {
     // -- assume instructions
     pass_manager.add(new crab_llvm::InsertInvariants());
     // -- simplify invariants added in the bytecode.
+    /*
     #ifdef HAVE_LLVM_SEAHORN
     pass_manager.add(llvm_seahorn::createInstructionCombiningPass());
     #else
     pass_manager.add(llvm::createInstructionCombiningPass());
     #endif
+    */
     if (PromoteAssume) {
       // -- promote verifier.assume to llvm.assume intrinsics
       pass_manager.add(crab_llvm::createPromoteAssumePass());
