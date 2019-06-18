@@ -191,9 +191,9 @@ struct CodeExpander {
 	    // last PHI node, we are ok.
 	    continue;
 	  } else if (DT && !(DT->dominates(Def, User))) {
-	    //llvm::errs() << *Def << " does not dominate its use at block "
-	    //             << User->getName() << "\n";
-	    //return nullptr;
+	    llvm::errs() << *Def << " does not dominate its use at block "
+	                 << User->getName() << "\n";
+	    return nullptr;
 	  }
 	}
       } else {
