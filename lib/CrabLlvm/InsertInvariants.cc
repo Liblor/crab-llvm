@@ -245,7 +245,6 @@ static bool instrument_block(lin_cst_sys_t csts, llvm::BasicBlock* bb,
   if (ret) return false;
 
   IRBuilder<> Builder(ctx);
-  //Builder.SetInsertPoint(bb->getFirstNonPHI());
   Builder.SetInsertPoint(bb->getTerminator());
   CodeExpander g;
   NumInstrBlocks++;
@@ -437,7 +436,6 @@ bool InsertInvariants::runOnFunction(Function &F) {
   LLVMContext& ctx = F.getContext();
   std::vector<BasicBlock*> UnreachableBlocks;
   std::vector<std::pair<BasicBlock*, BasicBlock*>> InfeasibleEdges;
-  // errs() << "---------------\n";
   for (auto &B : F) {
 
     // -- if the block has an unreachable instruction we skip it.
@@ -451,27 +449,6 @@ bool InsertInvariants::runOnFunction(Function &F) {
     if (alread_dead_block) continue;
 
     if (auto pre = crab->get_post(&B, false /*keep shadows*/)) {
-      //B.getTerminator()->print(errs());
-      //errs() << '\n';
-    //if (auto pre = crab->get_pre(&B, false /*keep shadows*/)) {
-      ///////
-      /// First, we do dead code elimination.
-      ///////
-      
-        /*
-      if (pre->is_bottom()) {
-	UnreachableBlocks.push_back(&B);
-	continue;
-      } else {
-	TerminatorInst *BTerm = B.getTerminator();
-	for (BasicBlock *Succ : BTerm->successors()) {
-	  if (!crab->has_feasible_edge(&B, Succ)) {
-	    InfeasibleEdges.push_back({&B, Succ});
-	  }
-	}
-      }
-      */
-      
       if (InvLoc == DEAD_CODE) {
 	continue;
       }
@@ -483,7 +460,6 @@ bool InsertInvariants::runOnFunction(Function &F) {
       // --- Instrument basic block with invariants
       if (InvLoc == PER_BLOCK || InvLoc == ALL) {
 	auto csts = pre->to_linear_constraints();
-    // errs() << csts << '\n';
 	change |= instrument_block(csts, &B, F.getContext(), cg, DT, m_assumeFn);
       } else if (InvLoc == PER_LOOP) {
 	LoopInfo& LI = getAnalysis<LoopInfoWrapperPass>(F).getLoopInfo();
