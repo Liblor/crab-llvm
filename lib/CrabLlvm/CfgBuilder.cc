@@ -2008,13 +2008,9 @@ namespace crab_llvm {
       case BinaryOperator::Add:
       case BinaryOperator::Sub:
       case BinaryOperator::Mul:
-      case BinaryOperator::SDiv:
-      case BinaryOperator::UDiv:
       case BinaryOperator::SRem:
       case BinaryOperator::URem:
       case BinaryOperator::Shl:
-      case BinaryOperator::AShr:
-      case BinaryOperator::LShr:	
 	doArithmetic(ref, I);
 	break;
       case BinaryOperator::And:
